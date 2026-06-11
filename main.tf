@@ -44,4 +44,9 @@ module "compute" {
   container_image      = var.container_image
 
   tags = local.tags
+
+  # Ensure the LB rule (and its probe association) is fully created before
+  # the VMSS, which references the probe as its health_probe_id - otherwise
+  # Azure can reject the VMSS with CannotUseInactiveHealthProbe.
+  depends_on = [module.load_balancer]
 }

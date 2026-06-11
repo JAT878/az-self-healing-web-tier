@@ -27,9 +27,9 @@ variable "location" {
 }
 
 variable "vm_size" {
-  description = "VM size for each web tier instance. Standard_B1ls is the smallest burstable SKU - sufficient for an NGINX welcome page."
+  description = "VM size for each web tier instance. Standard_B1s is a small burstable SKU - sufficient for an NGINX welcome page, with broad availability-zone coverage."
   type        = string
-  default     = "Standard_B1ls"
+  default     = "Standard_B1s"
 }
 
 variable "instance_count" {

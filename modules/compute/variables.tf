@@ -41,7 +41,7 @@ variable "health_probe_id" {
 variable "vm_size" {
   description = "VM size for each instance."
   type        = string
-  default     = "Standard_B1ls"
+  default     = "Standard_B1s"
 }
 
 variable "instance_count" {

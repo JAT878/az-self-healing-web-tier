@@ -4,7 +4,7 @@ project_name = "webtier"
 environment  = "dev"
 location     = "australiaeast"
 
-vm_size        = "Standard_B1ls"
+vm_size        = "Standard_B1s"
 instance_count = 2
 
 admin_username = "azureuser"

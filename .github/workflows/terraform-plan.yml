@@ -12,7 +12,8 @@ on:
       - "**.tf"
       - "**.tftpl"
       - ".github/workflows/terraform-plan.yml"
-
+  workflow_dispatch: {}
+  
 permissions:
   contents: read
 
