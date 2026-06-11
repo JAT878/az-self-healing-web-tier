@@ -1,0 +1,32 @@
+#cloud-config
+package_update: true
+%{ if container_image != "" }
+packages:
+  - docker.io
+
+runcmd:
+  - systemctl enable --now docker
+  - docker run -d --restart unless-stopped --name web -p 80:80 ${container_image}
+%{ else }
+packages:
+  - nginx
+
+write_files:
+  - path: /var/www/html/index.html
+    owner: root:root
+    permissions: '0644'
+    content: |
+      <!DOCTYPE html>
+      <html>
+        <head><title>${project_name} (${environment})</title></head>
+        <body style="font-family: sans-serif; margin: 4rem;">
+          <h1>${project_name} - ${environment}</h1>
+          <p>Self-healing N+1 web tier - this page is served by NGINX.</p>
+          <p>Served by host: __HOSTNAME__</p>
+        </body>
+      </html>
+
+runcmd:
+  - sed -i "s/__HOSTNAME__/$(hostname)/" /var/www/html/index.html
+  - systemctl enable --now nginx
+%{ endif }

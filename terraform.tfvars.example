@@ -1,0 +1,20 @@
+# Copy to terraform.tfvars (gitignored) and adjust as needed.
+
+project_name = "webtier"
+environment  = "dev"
+location     = "australiaeast"
+
+vm_size        = "Standard_B1ls"
+instance_count = 2
+
+admin_username = "azureuser"
+
+tags = {
+  owner = "your-name"
+}
+
+# Optional (bonus): run the page from a container instead of installing
+# NGINX natively. Built from container/Dockerfile and published by
+# .github/workflows/build-container.yml. Leave unset / empty to use the
+# native NGINX install.
+# container_image = "ghcr.io/jat878/azure-self-healing-web-tier:latest"

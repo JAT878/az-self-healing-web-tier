@@ -1,0 +1,42 @@
+name: Build and push container image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "container/**"
+      - ".github/workflows/build-container.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compute lowercase image name
+        run: echo "IMAGE=ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./container
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+
+# After the first run, set the package visibility to "Public" under the
+# repo's Packages tab so the VMSS instances can `docker pull` it without
+# registry credentials (see modules/compute/cloud-init.yaml.tftpl).
